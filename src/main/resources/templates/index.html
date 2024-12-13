@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Dashboard')}">
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    <div th:replace="~{layout/main :: nav}"></div>
+    
+    <div class="container content">
+        <h1 class="mb-4">Dashboard</h1>
+        
+        <div class="row">
+            <!-- Students Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-graduate fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Students</h5>
+                        <p class="card-text display-4" th:text="${studentCount}">0</p>
+                        <a th:href="@{/students}" class="btn btn-primary">Manage Students</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Courses Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-book fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Courses</h5>
+                        <p class="card-text display-4" th:text="${courseCount}">0</p>
+                        <a th:href="@{/courses}" class="btn btn-success">Manage Courses</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instructors Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chalkboard-teacher fa-3x mb-3 text-info"></i>
+                        <h5 class="card-title">Instructors</h5>
+                        <p class="card-text display-4" th:text="${instructorCount}">0</p>
+                        <a th:href="@{/instructors}" class="btn btn-info">Manage Instructors</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activities -->
+        <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Recent Students</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a th:each="student : ${recentStudents}" 
+                               th:href="@{/students/{id}(id=${student.id})}"
+                               class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1" th:text="${student.name}">Student Name</h6>
+                                    <small th:text="${#temporals.format(student.enrollmentDate, 'dd MMM yyyy')}">
+                                        Date
+                                    </small>
+                                </div>
+                                <p class="mb-1" th:text="${student.course?.name ?: 'No Course Assigned'}">
+                                    Course Name
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Recent Courses</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a th:each="course : ${recentCourses}" 
+                               th:href="@{/courses/{id}(id=${course.id})}"
+                               class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1" th:text="${course.name}">Course Name</h6>
+                                    <small th:text="${course.duration}">Duration</small>
+                                </div>
+                                <p class="mb-1" th:text="${course.instructor?.name ?: 'No Instructor Assigned'}">
+                                    Instructor Name
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>
